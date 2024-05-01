@@ -1,0 +1,28 @@
+nav, footer {
+    width: 100%;
+    padding: 10px;
+    background-color: #ccc; /* 임시 배경색 */
+    color: black; /* 임시 텍스트 색상 */
+    text-align: center;
+  }
+
+  .navbar {
+    background-color: #34375D; /* 어두운 배경 */
+    color: white; /* 백색 텍스트 */
+    padding: 10px 20px; /* 상하 10px, 좌우 20px의 패딩 */
+    display: flex; /* flexbox를 사용하여 아이템을 정렬 */
+    justify-content: space-between; /* 아이템을 좌우에 배치 */
+    align-items: center; /* 세로 중앙 정렬 */
+    font-family: Arial, sans-serif; /* 폰트 스타일 */
+}
+
+.navbar a {
+    color: white; /* 링크 텍스트 색상 */
+    text-decoration: none; /* 밑줄 제거 */
+    margin: 0 10px; /* 좌우 마진 */
+    font-size: 16px; /* 폰트 크기 */
+}
+
+.navbar a:hover {
+    text-decoration: underline; /* 호버 시 밑줄 */
+}
