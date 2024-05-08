@@ -12,6 +12,7 @@ import UpComing from './page/UpComing';
 import Loading from './components/Loading';
 import LocationAwareComponent from './Sections/LocationAwareComponent'
 import NotFound from './page/NotFound';
+import SignupPage from './page/SignUpPage';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="now-playing" element={<><NowPlayingPage /><LocationAwareComponent /></>}/>
         <Route path="top-rated" element={<><TopRatedPage /><LocationAwareComponent /></>}/>
         <Route path="up-coming" element={<><UpComing /><LocationAwareComponent /></>}/>
+        <Route path="/signup" element={<SignupPage />}/>
         <Route path="*" element={<NotFound />} />
       </Routes>
       {/* <Footer /> */}
