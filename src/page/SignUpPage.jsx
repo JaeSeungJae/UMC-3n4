@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const FormGroup = styled.div`
@@ -63,6 +64,16 @@ const SignupPage = () => {
   const [passwordCorrect, setPasswordCorrect] = useState('');
   const [passwordCheckError, setPasswordCheckError] = useState('');
   const [passwordCheckCorrect, setPasswordCheckCorrect] = useState('');
+  const [validate, setValidate] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (nameCorrect && emailCorrect && ageCorrect && passwordCorrect && passwordCheckCorrect) {
+      setValidate(true);
+    } else {
+      setValidate(false);
+    }
+  }, [nameCorrect, emailCorrect, ageCorrect, passwordCorrect, passwordCheckCorrect]);
 
   const validateName = (value) => {
     setName(value);
@@ -130,6 +141,14 @@ const SignupPage = () => {
     }
   };
 
+  const submit = () => {
+    alert('제출 완료!');
+    console.log(`name : ${name}`);
+    console.log(`age : ${age}`);
+    console.log(`email : ${email}`);
+    console.log(`password : ${password}`);
+    navigate('/#');
+  }
   return (
     <Body>
       <Back>
@@ -165,7 +184,7 @@ const SignupPage = () => {
           <Correct>{passwordCheckCorrect}</Correct></div>
         </FormGroup>
         <div className="container">
-          <Button onClick={() => alert('Processing form...')} type="button">제출하기</Button>
+          <Button onClick={submit} type="button" disabled={!validate}>제출하기</Button>
         </div>
       </Back>
     </Body>
