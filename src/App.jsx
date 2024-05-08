@@ -13,6 +13,7 @@ import Loading from './components/Loading';
 import LocationAwareComponent from './Sections/LocationAwareComponent'
 import NotFound from './page/NotFound';
 import SignupPage from './page/SignUpPage';
+import Login from './page/Login';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="top-rated" element={<><TopRatedPage /><LocationAwareComponent /></>}/>
         <Route path="up-coming" element={<><UpComing /><LocationAwareComponent /></>}/>
         <Route path="/signup" element={<SignupPage />}/>
+        <Route path="/login" element={<Login />}/>
         <Route path="*" element={<NotFound />} />
       </Routes>
       {/* <Footer /> */}

@@ -147,7 +147,7 @@ const SignupPage = () => {
     console.log(`age : ${age}`);
     console.log(`email : ${email}`);
     console.log(`password : ${password}`);
-    navigate('/#');
+    navigate('/login');
   }
   return (
     <Body>
