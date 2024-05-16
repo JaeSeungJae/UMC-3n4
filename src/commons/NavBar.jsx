@@ -10,7 +10,7 @@ function NavBar() {
   const navigate = useNavigate();
 
   return (
-    <nav className="navbar">
+    <nav className="navbar" style={{position: 'sticky', top:'0'}}>
       <div><a href="/#">UMC Movie</a></div>
       <div>
         <span style={{cursor: 'pointer', color: 'yellow', fontWeight: 'bold'}} onClick={()=>

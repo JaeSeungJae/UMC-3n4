@@ -49,6 +49,20 @@ function GridCards(props) {
       </Col>
     )
   }
+  else if (props.character) {
+    return (
+      <Col lg={6} md={8} xs={24}>
+        <ImageWrapper>
+              <img style={{width: '100%', height: '320px'}} src={props.image ? props.image : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSz7ztleRwzXhFdiwBYqZ8cib9RvEsukVVUS3niN1YQ&s'}
+               alt={props.characterName}/>
+              <p style={{margin: '5px'}}>{props.characterName}</p>
+          </ImageWrapper>
+          {/* <div style={{position: 'relative'}}>
+              <img style={{width: '100%', height: '320px'}} src={props.image} alt={props.characterName}/>
+          </div> */}
+      </Col>
+    )
+  }
 else {
   return (
     <Col lg={6} md={8} xs={24}>

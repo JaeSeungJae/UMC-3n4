@@ -70,6 +70,7 @@ function MovieDetail(props) {
                         image={cast.profile_path ?
                             `${IMAGE_BASE_URL}w300${cast.profile_path}` : null}
                         characterName={cast.name}
+                        character
                     />
                 </React.Fragment>
             ))}

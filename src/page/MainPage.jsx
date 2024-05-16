@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import React, {useEffect} from 'react'
 import GridCards from '../commons/GridCards'
 // import './App.css'
@@ -6,6 +6,7 @@ import { Row } from 'antd';
 import MainImage from '../commons/MainImage';
 import styled from 'styled-components';
 import icon from './search.png'
+import {debounce} from 'lodash';
 
 const MovieList = styled.div`
 height: 500px;  // 적절한 높이 설정
@@ -35,22 +36,26 @@ function MainPage() {
 
     const [search, setSearch] = useState("");
     const [Movies, setMovies] = useState([]);
-    const searchMovie = (value) => {
-        setSearch(value);
-        if (value) {
+    const searchMovie = useCallback((value) => {
+        if (value.trim()) {
             fetch(`${API_URL}search/movie?query=${encodeURIComponent(value)}&api_key=${API_KEY}`)
             .then(response => response.json())
             .then(response => {
-                setMovies(response.results)
+                setMovies(response.results);
             })
             .catch(error => {
                 console.error(error);
                 setMovies([]);
-            })
-        }
-        else {
+            });
+        } else {
             setMovies([]);
         }
+    }, []);
+    const debouncedSearchMovie = useCallback(debounce((value) => searchMovie(value), 300), [searchMovie]);
+    const handleSearchChange = (event) => {
+        const value = event.target.value;
+        setSearch(value);
+        debouncedSearchMovie(value);
     }
 
     return (
@@ -64,7 +69,7 @@ function MainPage() {
         </div>
         <div style={{display: 'flex', alignContent: 'center', alignItems: 'center', 
         justifyContent: 'center', marginTop: '30px'}}>
-            <input type="text" value={search} onChange={(e) => searchMovie(e.target.value)}
+            <input type="text" value={search} onChange={handleSearchChange}
              style={{height: '40px', width: '500px', borderRadius: '50px', paddingLeft: '30px'}}/>
              <span>🔍</span>
         </div>
