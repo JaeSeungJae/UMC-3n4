@@ -48,14 +48,34 @@ const Correct = styled.span`
     font-size: 0.8em;
 `;
 
+const Bottom = styled.div`
+  font-weight: bold;
+  display: flex;
+  color: white;
+  padding: 30px;
+  align-items: center;
+  justify-content: center;
+`
+
+const Pstyle = styled.p`
+  margin-right: 40px;
+  cursor: pointer;
+`
+const PisLogin = styled.p`
+  cursor: pointer;
+`
+
 const SignupPage = () => {
   const [name, setName] = useState('');
+  const [userId, setUserId] = useState('');
   const [email, setEmail] = useState('');
   const [age, setAge] = useState('');
   const [password, setPassword] = useState('');
   const [passwordCheck, setPasswordCheck] = useState('');
   const [nameError, setNameError] = useState('');
   const [nameCorrect, setNameCorrect] = useState('');
+  const [userIdError, setUserIdError] = useState('');
+  const [userIdCorrect, setUserIdCorrect] = useState('');
   const [emailError, setEmailError] = useState('');
   const [emailCorrect, setEmailCorrect] = useState('');
   const [ageError, setAgeError] = useState('');
@@ -83,6 +103,17 @@ const SignupPage = () => {
     } else {
       setNameError('');
       setNameCorrect('멋진 이름이네요.');
+    }
+  };
+
+  const validateId = (value) => {
+    setUserId(value);
+    if (!value) {
+      setUserIdError('필수 입력 항목입니다!');
+      setUserIdCorrect('');
+    } else {
+      setUserIdError('');
+      setUserIdCorrect('올바른 ID입니다.');
     }
   };
 
@@ -160,6 +191,12 @@ const SignupPage = () => {
           <Correct>{nameCorrect}</Correct></div>
         </FormGroup>
         <FormGroup>
+          <Input type="text" id="userId" value={userId} onChange={(e) => validateId(e.target.value)}
+          placeholder='아이디를 입력해주세요.'/>
+          <div><Error>{userIdError}</Error>
+          <Correct>{userIdCorrect}</Correct></div>
+        </FormGroup>
+        <FormGroup>
           <Input type="text" id="email" value={email} onChange={(e) => validateEmail(e.target.value)}
           placeholder='이메일을 입력해주세요.'/>
           <div><Error>{emailError}</Error>
@@ -186,6 +223,12 @@ const SignupPage = () => {
         <div className="container">
           <Button onClick={submit} type="button" disabled={!validate}>제출하기</Button>
         </div>
+        <Bottom>
+          <Pstyle>이미 아이디가 있으신가요?</Pstyle>
+          <PisLogin onClick={()=>
+          navigate('/login')
+          }>로그인 페이지로 이동하기</PisLogin>
+        </Bottom>
       </Back>
     </Body>
   );

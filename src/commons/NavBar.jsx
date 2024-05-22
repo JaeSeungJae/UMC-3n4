@@ -15,7 +15,7 @@ function NavBar() {
       <div>
         <span style={{cursor: 'pointer', color: 'yellow', fontWeight: 'bold'}} onClick={()=>
           {navigate('/signup');}}>회원가입</span>
-        {/* login ? '로그인' : '로그아웃' */}
+        <a href="/login">Login</a>
         <a href="/popular">Popular</a>
         <a href="/now-playing">Now Playing</a>
         <a href="/top-rated">Top Rated</a>

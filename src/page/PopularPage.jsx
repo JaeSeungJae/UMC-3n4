@@ -25,7 +25,8 @@ function PopularPage() {
         .then(response => response.json())
         .then(response => {
 
-            setMovies([...Movies, ...response.results])
+            //setMovies([...Movies, ...response.results])
+            setMovies(response.results)
             {CurrentPage === 0 && setMainMovieImage(response.results[0])}
             setCurrentPage(response.page)
         })
@@ -34,6 +35,15 @@ function PopularPage() {
     const loadMoreItems = () => {
         const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=${CurrentPage + 1}`;
         fetchMovies(endpoint)
+    }
+    const loadPrevItems = () => {
+        if (CurrentPage > 1) {
+            const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=${CurrentPage - 1}`;
+            fetchMovies(endpoint)
+        }
+        else {
+            alert('첫 번째 페이지입니다.');
+        }
     }
 
     return (
@@ -69,7 +79,9 @@ function PopularPage() {
                 </div>
 
                 <div style={{display: 'flex', justifyContent:'center'}}>
-                    <button onClick={loadMoreItems}>Load More</button>
+                    <p style={{color: CurrentPage > 1 ? 'white' : 'red', marginRight: '50px', cursor: "pointer"}} onClick={loadPrevItems}>&lt;</p>
+                    <p style={{color: 'white'}}>{CurrentPage}</p>
+                    <p style={{color: 'white', marginLeft: '50px', cursor: "pointer"}} onClick={loadMoreItems}>&gt;</p>
                 </div>
             </div>
         </>
