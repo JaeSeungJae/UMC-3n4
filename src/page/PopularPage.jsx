@@ -4,6 +4,7 @@ import GridCards from '../commons/GridCards'
 // import './App.css'
 import { Row } from 'antd';
 import MainImage from '../commons/MainImage';
+import Loading from '../components/Loading';
 
 
 function PopularPage() {
@@ -14,13 +15,19 @@ function PopularPage() {
     const API_URL = 'https://api.themoviedb.org/3/'
     const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/'
     const API_KEY = '371aff56c01e4c1d3192f0545f0e9798'
+    const [loading, setLoading] = useState(false);
     useEffect(() => {
         const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
         fetchMovies(endpoint)
         
     }, [])
 
+    useEffect(() => {
+        console.log("loading...");
+    }, [loading])
+
     const fetchMovies = (endpoint) => {
+        setLoading(true);
         fetch(endpoint)
         .then(response => response.json())
         .then(response => {
@@ -29,7 +36,9 @@ function PopularPage() {
             setMovies(response.results)
             {CurrentPage === 0 && setMainMovieImage(response.results[0])}
             setCurrentPage(response.page)
+            setLoading(false);
         })
+        
     }
 
     const loadMoreItems = () => {
@@ -48,6 +57,7 @@ function PopularPage() {
 
     return (
         <>
+            {loading && <Loading></Loading>}
             <div style={{width: '85%', margin: '0'}}>
             {/* {MainMovieImage &&
             <MainImage 

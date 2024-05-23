@@ -32,8 +32,13 @@ const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/'
 const API_KEY = '371aff56c01e4c1d3192f0545f0e9798'
 
 
-function MainPage() {   
 
+
+function MainPage() {   
+    const username = localStorage.getItem('user');
+    useEffect(() => {
+        console.log(username);
+    }, [])
     const [search, setSearch] = useState("");
     const [Movies, setMovies] = useState([]);
     const searchMovie = useCallback((value) => {
@@ -62,7 +67,9 @@ function MainPage() {
         <>
         <div style={{display: 'flex', width: '100%', height: '300px', backgroundColor: 'black', margin: '10px'
         , alignContent: 'center', justifyContent: 'center', fontWeight: 'bold'}}>
-            <span style={{fontSize: '36px', color: 'white', alignContent: 'center'}}>환영합니다</span>
+            <span style={{fontSize: '36px', color: 'white', alignContent: 'center'}}>
+                {username}님, 환영합니다
+            </span>
         </div>
         <div style={{display: 'flex', alignContent: 'center', justifyContent: 'center', width: '100%', margin: '10px'}}>
             <span style={{fontSize: '36px', color: 'white', fontWeight: 'bold'}}>🎥 Find your movies!</span>

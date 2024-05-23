@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import GridCards from '../commons/GridCards';
 import { Row } from 'antd';
 import MainImage from '../commons/MainImage';
+import Loading from '../components/Loading';
 
 function NowPlayingPage() {
     const [Movies, setMovies] = useState([]);
@@ -11,6 +12,7 @@ function NowPlayingPage() {
     const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/';
     const API_KEY = '371aff56c01e4c1d3192f0545f0e9798';
     const observer = useRef();
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const endpoint = `${API_URL}movie/now_playing?api_key=${API_KEY}&language=en-US&page=1`;
@@ -18,6 +20,7 @@ function NowPlayingPage() {
     }, []);
 
     const fetchMovies = (endpoint) => {
+        setLoading(true);
         fetch(endpoint)
             .then(response => response.json())
             .then(response => {
@@ -26,6 +29,7 @@ function NowPlayingPage() {
                     setMainMovieImage(response.results[0]);
                 }
                 setCurrentPage(response.page);
+                setLoading(false);
             });
     }
 
@@ -46,6 +50,7 @@ function NowPlayingPage() {
 
     return (
         <>
+            {loading && <Loading></Loading>}
             <div style={{ width: '85%', margin: '0' }}>
                 {/* {MainMovieImage &&
                     <MainImage

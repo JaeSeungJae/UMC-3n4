@@ -172,13 +172,42 @@ const SignupPage = () => {
     }
   };
 
-  const submit = () => {
-    alert('제출 완료!');
-    console.log(`name : ${name}`);
-    console.log(`age : ${age}`);
-    console.log(`email : ${email}`);
-    console.log(`password : ${password}`);
-    navigate('/login');
+  const submit = async () => {
+    try {
+      const data = {
+        name: name,
+        email: email,
+        age: age,
+        username: userId,
+        password: password,
+        passwordCheck: passwordCheck,
+      };
+
+      const response = await fetch('http://localhost:8080/auth/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+      });
+      const responseData = await response.json();
+      if (response.ok) {
+        console.log(responseData.token);
+        alert('전송 완료!');
+        navigate('/login');
+      }
+      else {
+        alert('에러');
+      }
+    }
+    catch {
+      alert('오류 발생');
+    }
+    // console.log(`name : ${name}`);
+    // console.log(`age : ${age}`);
+    // console.log(`email : ${email}`);
+    // console.log(`password : ${password}`);
+    
   }
   return (
     <Body>
