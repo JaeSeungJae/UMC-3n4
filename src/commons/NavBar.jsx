@@ -1,41 +1,62 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../Nav.css'
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import '../Nav.css';
 
 function NavBar() {
-  const [login, setLogin] = useState(localStorage.getItem('user'));
-  const [isLogin, setIsLogin] = useState(true);
-  useEffect(() => {
-    if (login) {
-      setIsLogin(true);
-    }
-    else {
-      setIsLogin(false);
-    }
-  }, [])
-  const logout = () => {
-    localStorage.setItem('user', '');
-    setIsLogin(false);
-  }
-  const navigate = useNavigate();
+    const [isLogin, setIsLogin] = useState(!!localStorage.getItem('user'));
+    const [menuVisible, setMenuVisible] = useState(false);
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  return (
-    <nav className="navbar" style={{position: 'sticky', top:'0'}}>
-      <div><a href="/#">UMC Movie</a></div>
-      <div>
-        {!isLogin && <span style={{cursor: 'pointer', color: 'yellow', fontWeight: 'bold'}} onClick={()=>
-          {navigate('/signup');}}>회원가입</span>}
-        {!isLogin && <a href="/login">Login</a>}
-        {isLogin && <span style={{cursor: 'pointer', color: 'yellow', fontWeight: 'bold'}} onClick={logout}>
-          로그아웃
-        </span>}
-        <a href="/popular">Popular</a>
-        <a href="/now-playing">Now Playing</a>
-        <a href="/top-rated">Top Rated</a>
-        <a href="/up-coming">Upcoming</a>
-      </div>
-    </nav>
-  )
+    useEffect(() => {
+        const updateAuthStatus = () => setIsLogin(!!localStorage.getItem('user'));
+        const handleResize = () => setWindowWidth(window.innerWidth);
+
+        updateAuthStatus();
+        window.addEventListener('storage', updateAuthStatus);
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('storage', updateAuthStatus);
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    const logout = () => {
+        localStorage.removeItem('user');
+        setIsLogin(false);
+        setMenuVisible(false);
+    };
+
+    const toggleMenu = () => {
+        if (windowWidth <= 768) {
+            setMenuVisible(!menuVisible);
+        }
+    };
+
+    const navigate = useNavigate();
+
+    return (
+        <nav className="navbar">
+            <div className="navbar-logo"><Link to="/" onClick={() => setMenuVisible(false)}>UMC Movie</Link></div>
+            <div className="menu-icon" onClick={toggleMenu}>{menuVisible ? '✕' : '☰'}</div>
+            {(menuVisible || windowWidth > 768) && (
+                <div className={`menu ${menuVisible ? "open" : ""}`}>
+                    {!isLogin ? (
+                        <>
+                            <Link to="/signup" onClick={() => setMenuVisible(false)}>회원가입</Link>
+                            <Link to="/login" onClick={() => setMenuVisible(false)}>Login</Link>
+                        </>
+                    ) : (
+                        <span onClick={logout}>로그아웃</span>
+                    )}
+                    <Link to="/popular" onClick={() => setMenuVisible(false)}>Popular</Link>
+                    <Link to="/now-playing" onClick={() => setMenuVisible(false)}>Now Playing</Link>
+                    <Link to="/top-rated" onClick={() => setMenuVisible(false)}>Top Rated</Link>
+                    <Link to="/upcoming" onClick={() => setMenuVisible(false)}>Upcoming</Link>
+                </div>
+            )}
+        </nav>
+    );
 }
 
-export default NavBar
+export default NavBar;

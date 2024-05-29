@@ -3,49 +3,62 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const FormGroup = styled.div`
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 `;
 
 const Body = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #22254B;
 `;
 
 const Back = styled.div`
-    padding: 50px 100px;
-    align-items: center;
-    justify-content: center;
+  padding: 20px;
+  background-color: #22254B;
+  border-radius: 10px;
+  
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 400px;
+
+  @media (min-width: 768px) {
+    padding: 50px;
+  }
 `;
 
 const Button = styled.button`
-    width: 100%;
-    padding: 10px;
-    background-color: white;
-    color: black;
-    border: 1px solid #fff;
-    border-radius: 50px;
-    cursor: pointer;
-    margin: 20px auto;
-    height: 40px;
+  width: 100%;
+  padding: 10px;
+  background-color: white;
+  color: black;
+  border: 1px solid transparent;
+  border-radius: 50px;
+  cursor: pointer;
+  margin-top: 20px;
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;
 
 const Input = styled.input`
-    width: 500px;
-    padding: 10px;
-    border: 1px solid #fff;
-    border-radius: 50px;
-    height: 30px;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 50px;
+  margin-top: 10px;
 `;
 
 const Error = styled.span`
-    color: red;
-    font-size: 0.8em;
+  color: red;
+  font-size: 0.8em;
 `;
 
 const Correct = styled.span`
-    color: green;
-    font-size: 0.8em;
+  color: green;
+  font-size: 0.8em;
 `;
 
 const Bottom = styled.div`
@@ -55,14 +68,17 @@ const Bottom = styled.div`
   padding: 30px;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 `
 
 const Pstyle = styled.p`
-  margin-right: 40px;
+  margin-bottom: 10px;
   cursor: pointer;
 `
+
 const PisLogin = styled.p`
   cursor: pointer;
+  color: lightblue;
 `
 
 const SignupPage = () => {
@@ -88,13 +104,14 @@ const SignupPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (nameCorrect && emailCorrect && ageCorrect && passwordCorrect && passwordCheckCorrect) {
+    if (nameCorrect && userIdCorrect && emailCorrect && ageCorrect && passwordCorrect && passwordCheckCorrect) {
       setValidate(true);
     } else {
       setValidate(false);
     }
-  }, [nameCorrect, emailCorrect, ageCorrect, passwordCorrect, passwordCheckCorrect]);
+  }, [nameCorrect, userIdCorrect, emailCorrect, ageCorrect, passwordCorrect, passwordCheckCorrect]);
 
+  // Validation and submit functions would be here...
   const validateName = (value) => {
     setName(value);
     if (!value) {
@@ -209,10 +226,11 @@ const SignupPage = () => {
     // console.log(`password : ${password}`);
     
   }
+
   return (
     <Body>
       <Back>
-        <h2 style={{color: "white", textAlign: "center", marginBottom: "30px"}}>회원가입</h2>
+        <h2 style={{ color: "white", textAlign: "center", marginBottom: "30px" }}>회원가입</h2>
         <FormGroup>
           <Input type="text" id="name" value={name} onChange={(e) => validateName(e.target.value)}
           placeholder='이름을 입력해주세요.'/>
@@ -254,9 +272,7 @@ const SignupPage = () => {
         </div>
         <Bottom>
           <Pstyle>이미 아이디가 있으신가요?</Pstyle>
-          <PisLogin onClick={()=>
-          navigate('/login')
-          }>로그인 페이지로 이동하기</PisLogin>
+          <PisLogin onClick={() => navigate('/login')}>로그인 페이지로 이동하기</PisLogin>
         </Bottom>
       </Back>
     </Body>

@@ -1,85 +1,96 @@
-import React from 'react'
-import { useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-// import { API_KEY, API_URL, IMAGE_BASE_URL } from '../../Config'
-import MainImage from '../commons/MainImage'
-import MovieInfo from '../Sections/MovieInfo'
-import GridCards from '../commons/GridCards'
-import { Row } from 'antd'
-import Favorite from '../Sections/Favorite'
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import { Row } from 'antd';
+import MainImage from '../commons/MainImage';
+import MovieInfo from '../Sections/MovieInfo';
+import GridCards from '../commons/GridCards';
+import Favorite from '../Sections/Favorite';
 
-function MovieDetail(props) {
-    const {movieId} = useParams();
-    const API_URL = 'https://api.themoviedb.org/3/'
-    const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/'
-    const API_KEY = '371aff56c01e4c1d3192f0545f0e9798'
-    const [movie, setMovie] = useState([])
-    const [Casts, setCasts] = useState([])
-    const [actorToggle, setActorToggle] = useState(false)
-    const toggleActerView = () => {
-        setActorToggle(!actorToggle)
-    }
+const API_URL = 'https://api.themoviedb.org/3/';
+const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/';
+const API_KEY = '371aff56c01e4c1d3192f0545f0e9798';
+
+const Container = styled.div`
+  width: 85%;
+  margin: 1rem auto;
+  @media (max-width: 768px) {
+    width: 95%;
+  }
+`;
+
+const Button = styled.button`
+  display: flex;
+  justify-content: center;
+  margin: 2rem;
+  padding: 0.5rem 1rem;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #1c1c1c;
+  color: white;
+  border-radius: 4px;
+  border: none;
+  &:hover {
+    background-color: #333;
+  }
+`;
+
+function MovieDetail() {
+    const { movieId } = useParams();
+    const [movie, setMovie] = useState({});
+    const [Casts, setCasts] = useState([]);
+    const [actorToggle, setActorToggle] = useState(false);
+
+    const toggleActorView = () => {
+        setActorToggle(!actorToggle);
+    };
 
     useEffect(() => {
-        let endpointCrew = `${API_URL}movie/${movieId}/credits?api_key=${API_KEY}`
-        let endpointInfo = `${API_URL}movie/${movieId}?api_key=${API_KEY}`
+        const endpointCrew = `${API_URL}movie/${movieId}/credits?api_key=${API_KEY}`;
+        const endpointInfo = `${API_URL}movie/${movieId}?api_key=${API_KEY}`;
 
         fetch(endpointInfo)
         .then(response => response.json())
         .then(response => {
-            setMovie(response)
-        })
-
+            setMovie(response);
+        });
 
         fetch(endpointCrew)
         .then(response => response.json())
         .then(response => {
-            setCasts(response.cast)
-        })
+            setCasts(response.cast);
+        });
+    }, [movieId]);
 
-    }, [])
-
-  return (
-    <div>
-
-    <MainImage
-        image={`${IMAGE_BASE_URL}w400${movie.backdrop_path}`} 
-        title={movie.original_title}
-        text={movie.overview}
-    />
-      <div style={{width: '85%', margin: '1rem auto'}}>
-
-        <div style={{display:'flex', justifyContent: 'flex-end'}}>
-            <Favorite MovieInfo={movie} movieId={movieId} userFrom={localStorage.getItem('userId')} />
+    return (
+        <div>
+            <MainImage
+                image={`${IMAGE_BASE_URL}w400${movie.backdrop_path}`}
+                title={movie.original_title}
+                text={movie.overview}
+            />
+            <Container>
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Favorite MovieInfo={movie} movieId={movieId} userFrom={localStorage.getItem('userId')} />
+                </div>
+                <MovieInfo movie={movie} />
+                <br />
+                <Button onClick={toggleActorView}>Toggle Actor View</Button>
+                {actorToggle && (
+                    <Row gutter={[16, 16]}>
+                    {Casts.map((cast, index) => (
+                        <GridCards
+                            key={index}
+                            image={cast.profile_path ? `${IMAGE_BASE_URL}w300${cast.profile_path}` : null}
+                            characterName={cast.name}
+                            character
+                        />
+                    ))}
+                    </Row>
+                )}
+            </Container>
         </div>
-
-        <MovieInfo 
-            movie={movie}
-        />
-        <br></br>
-
-        <div style={{display: 'flex', justifyContent: 'center', margin: '2rem'}}>
-            <button onClick={toggleActerView}> Toggle Actor View</button>
-
-        </div>
-        {actorToggle && 
-            <Row gutter={[16, 16]}>
-            {Casts && Casts.map((cast, index) => (
-                <React.Fragment key={index}>
-                    <GridCards
-                        image={cast.profile_path ?
-                            `${IMAGE_BASE_URL}w300${cast.profile_path}` : null}
-                        characterName={cast.name}
-                        character
-                    />
-                </React.Fragment>
-            ))}
-        </Row>
-        }
-            
-      </div>
-    </div>
-  )
+    );
 }
 
-export default MovieDetail
+export default MovieDetail;
